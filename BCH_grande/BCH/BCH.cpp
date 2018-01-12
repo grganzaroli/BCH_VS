@@ -466,13 +466,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		else
 			aux_s = 0;
 	}
-	/*
-	for(int l = 0; l < 2*t+1; l++)
-	{
-	printf("%i ", sindrome[l]);
-	}
-	printf("\n");
-	*/
+
 	if(aux_s == 1)
 	{
 		printf("SINAL RECEBIDO OK\n"); // ------------ FIM ------------
@@ -548,9 +542,9 @@ calc_detA:
 
 	//calcular a matriz S 
 
-	for(int i = 0; i < t; i++)
+	for(int i = 0; i < A_size; i++)
 	{
-		for(int j = 0; j < t; j++)
+		for(int j = 0; j < A_size; j++)
 		{
 			S[i][j] = A[i][j];
 		}
@@ -558,72 +552,78 @@ calc_detA:
 		S[i][t] = sindrome[2*i];
 	}
 
-	printf("");
-
-	for(int i=0; i<t; i++) 
+	for (int i = 0; i < t; i++) 
 	{
+
+		printf("");
+
 		// Search for maximum in this column
 		int maxEl = S[i][i];
 		int maxRow = i;
-		for (int j=i+1; j<t; j++) 
+		for (int kk = i+1; kk < t; kk++)
 		{
-			if (S[j][i] > maxEl) 
+			if (abs(S[kk][i]) > maxEl) 
 			{
-				maxEl = S[j][i];
-				maxRow = j;
+				maxEl = S[kk][i];
+				maxRow = kk;
 			}
 		}
 
-		// Make all rows below this one 0 in current column
-		for (int KK=i+1; KK<t; KK++) 
+		printf("");
+
+		// Swap maximum row with current row (column by column)
+		for (int kk = i; kk < t+1; kk++) 
 		{
+			int tmp = S[maxRow][kk];
+			S[maxRow][kk] = S[i][kk];
+			S[i][kk] = tmp;
+		}
 
-			if(S[i][i] == 0)
-				inv_S_i_i = 0;
-			else
-				inv_S_i_i = tab_inv_dec[S[i][i]-1];
+		printf("");
 
-			int c = tab_mult(S[KK][i],inv_S_i_i);
-			for (int j=i; j<t+1; j++) 
+		// Make all rows below this one 0 in current column
+		for (int kk = i+1; kk < t; kk++) 
+		{
+			int c = tab_mult(S[kk][i], tab_inv_dec[S[i][i]]); //c = -S[kk][i]/S[i][i]
+			for (int j = i; j < t+1; j++) 
 			{
 				if (i==j) 
-					S[KK][j] = 0;
+				{
+					S[kk][j] = 0;
+				} 
 				else 
 				{
-					S[KK][j] = S[KK][j]^tab_mult(c,S[i][j]);
+					S[kk][j] += tab_mult(c, S[i][j]);
 				}
 			}
 		}
-
 	}
 
-	// Solve equation Ax=b for an upper triangular matrix S
-	for (int i=t-1; i>=0; i--) 
+	printf("");
+
+	// Solve equation Ax=b for an upper triangular matrix A
+	for (int i = t-1; i >= 0; i--) 
 	{
-
-		if(S[i][i] == 0)
-			inv_S_i_i = 0;
-		else
-			inv_S_i_i = tab_inv_dec[S[i][i]-1];
-
-		aux_LAMBDA[i] = tab_mult(S[i][t],inv_S_i_i);
-		printf("");
-		for (int j=i-1;j>=0; j--) 
+		LAMBDA[i] = tab_mult(S[i][t], tab_inv_dec[S[i][i]]); //LAMBDA[i] = S[i][n]/S[i][i]
+		for (int kk = i-1; kk >= 0; kk--) 
 		{
-			S[j][t] = S[j][t] ^ tab_mult(S[j][i],aux_LAMBDA[i]);
-			printf("");
+			S[kk][t] += tab_mult(S[kk][i], LAMBDA[i]);
 		}
-
 	}
+
+	printf("");
+
 	//----------------------------------------------------------------
 
-	for(int i = 0; i <= t; i++)
+	for(int i = t; i > 0; i--)
 	{
-		LAMBDA[i] = aux_LAMBDA[t-i];
+		LAMBDA[i] = LAMBDA[i-1];
 	}
 
 	LAMBDA[0] = 1;
 
+
+	printf("");
 
 	// ------------------------------DECODIFICADOR BCH - ENCONTRAR POSI��O DOS ERROS - FORNEY ------------------------------
 
@@ -657,191 +657,80 @@ calc_detA:
 	printf("");
 
 
-
-	//o numero de erros � dado pelo numero de linhas n�o-nulas da matriz S.
-	//se 1 > n_err > t, eu calculo todas as possibilidades de posi��o de erro at� a sindrome zerar que d� no m�ximo 924 tentativas para 6 de 12 bits de erro
-
-	int gamb;
-
-	//contar numero de erros
-	for(int i = t-1; i >= 0; i--)
+	for(int ii = 0; ii < (n+n_extension); ii++)
 	{
-		gamb = 0;
-		for(int j = 0; j <= t; j++)
-		{
-			gamb = gamb + S[i][j];
-		}
-
-		if(gamb == 0)
-		{
-			n_err--;
-		}
+		aux_r[ii] = r[ii];
 	}
 
-	if(n_err < t)
+	for(int ii = 0; ii < t; ii++)
 	{
-		//PR�-SINDROME (deixar calculadoas s�ndromes das posi�oes que est�o certas)
-
-		memset (pre_sindrome,0, sizeof(pre_sindrome[0])*(2*t+1));
-
-		int a = 0;
-
-		for(int I = 1; I < 2*t+1; I++)
-		{
-			for(int j = 0; j < (n+n_extension); j++)
-			{
-				if(j != pos_err[a]) //ignorar posi�oes com erro
-				{
-					pre_sindrome[I] = pre_sindrome[I]^(tab_mult(aux_r[j],GF[(I*j)%(n+n_extension)])); //soma em binario
-				}
-				else 
-				{
-					a++;
-				}
-			}
-			a = 0;
-		}
-		//permutar os erros
-		int aux;
-		for(int i = 0; i < pow(2, t); i++)
-		{
-again:
-			count = 0;
-			aux = i;
-			for(int j = 0; j < t; j++)
-			{
-				if(aux%2 == 1)
-				{
-					teste_erros[j] = 1;
-					count ++;
-				}
-				else
-					teste_erros[j] = 0;
-
-				if(count > n_err)//mais erros que n_err, nao preciso testar
-				{
-					i++;
-					goto again;
-				}
-
-				aux = aux/2;
-			}
-
-			if(count < n_err)//menos erros que n_err, nao preciso testar
-			{
-				i++;
-				goto again;
-			}
-
-			for(int ii = 0; ii < (n+n_extension); ii++)
-			{
-				aux_r[ii] = r[ii];
-			}
-
-			for(int ii = 0; ii < t; ii++)
-			{
-				if(teste_erros[ii] == 1)
-					aux_r[pos_err[ii]] = aux_r[pos_err[ii]]^1;
-			}
-
-			//CALCULAR SINDROME (GAUSS)
-
-			for(int I = 0; I < 2*t+1; I++)
-			{
-				sindrome[I] = pre_sindrome[I];
-			}
-
-			for(int I = 1; I < 2*t+1; I++)
-			{
-				for(int j = 0; j < n_err; j++)
-				{
-					sindrome[I] = sindrome[I]^(tab_mult(aux_r[pos_err[j]],GF[(I*pos_err[j])%(n+n_extension)])); //soma em binario
-					printf("");
-				}
-			}
-
-			for(int I = 0; I < 2*t; I++)
-			{
-				sindrome[I] = sindrome[I+1];
-			}
-			sindrome[2*t] = 0;
-
-			int aux_s = 1; //auxiliar para verificar sindromes
-
-			for(int l = 0; l < 2*t+1; l++)
-			{
-				if(sindrome[l] == 0)
-					aux_s = aux_s*1;
-				else
-					aux_s = 0;
-			}
-
-			if(aux_s == 1)
-			{
-				for(int I = 0; I < (n+n_extension); I++)
-				{
-					r[I] = aux_r[I];
-				}
-				printf("%i ERROS, SINAL CORRIGIDO\n", n_err); // ------------ FIM ------------
-				goto end;
-			}
-		}
+		if(pos_err[ii] >= 0)
+			aux_r[pos_err[ii]] = aux_r[pos_err[ii]]^1;
 	}
-	else if (n_err == t)
+
+	printf ("");
+
+	//zerar sindrome
+
+	for(int i = 0; i < 2*t+1; i++)
 	{
+		sindrome[i] = 0;
+	}
 
-		memset (sindrome,0, sizeof(sindrome[0])*(2*t+1));
+	printf ("");
 
-		for(int ii = 0; ii < (n+n_extension); ii++)
+	//CALCULAR SINDROME (GAUSS)
+
+	for(int i = 1; i < 2*t+1; i++)
+	{
+		for(int j = 0; j < (n+n_extension); j++)
 		{
-			aux_r[ii] = r[ii];
+			sindrome[i] = sindrome[i]^(tab_mult(aux_r[j],GF[(i*j)%(n+n_extension)])); //soma em binario
+			printf ("");
 		}
+		printf ("");
+	}
 
-		for(int i = 0; i < t; i++)
-		{
-			aux_r[pos_err[i]] = aux_r[pos_err[i]]^1;
-		}
+	for(int i = 0; i < 2*t; i++)
+	{
+		sindrome[i] = sindrome[i+1];
+	}
+	sindrome[2*t] = 0;
 
-		//SINDROME (GAUSS)
+	aux_s = 1; //auxiliar para verificar sindromes
 
-		for(int i = 1; i < 2*t+1; i++)
-		{
-			for(int j = 0; j < (n+n_extension); j++)
-			{
-				sindrome[i] = sindrome[i]^(tab_mult(aux_r[j],GF[(i*j)%(n+n_extension)])); //soma em binario
-			}
-		}
-
-		for(int i = 0; i < 2*t; i++)
-		{
-			sindrome[i] = sindrome[i+1];
-		}
-		sindrome[2*t] = 0;
-
-		int aux_s = 1; //auxiliar para verificar sindromes
-
-		for(int l = 0; l < 2*t+1; l++)
-		{
-			if(sindrome[l] == 0)
-				aux_s = aux_s*1;
-			else
-				aux_s = 0;
-		}
-
-		if(aux_s == 1)
-		{
-			for(int I = 0; I < (n+n_extension); I++)
-			{
-				r[I] = aux_r[I];
-			}
-			printf("%i ERROS, SINAL CORRIGIDO\n", n_err); // ------------ FIM ------------
-			goto end;
-		}
+	for(int l = 0; l < 2*t+1; l++)
+	{
+		if(sindrome[l] == 0)
+			aux_s = aux_s*1;
 		else
-			printf("SINDROMES != 0, SINAL NAO CORRIGIDO\n"); // ------------ FIM ------------
-	} 
+			aux_s = 0;
+	}
+
+	for(int I = 0; I < (n+n_extension); I++)
+	{
+		r[I] = aux_r[I];
+	}
+
+	if(aux_s == 1)
+	{
+		printf("SINAL CORRIGIDO\n"); // ------------ FIM ------------
+		goto end;
+	}
+	else
+		printf("SINDROMES != 0, SINAL NAO CORRIGIDO\n"); // ------------ FIM ------------
 
 end:
+
+	F = fopen("vetores_BCH.txt", "a+");
+	fprintf(F, "\n");
+	fprintf(F, "c = ");
+	for (int j = (n+n_extension-1); j >= 0; j--)
+	{
+		fprintf(F, "%i", r[j]);
+	}
+	fclose(F);
+	printf("vetores_BCH_end OK\n");
 	printf ("\n");
 
 	clock_t fim = clock();
