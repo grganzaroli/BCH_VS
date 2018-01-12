@@ -53,8 +53,8 @@ int pol_gerador[n-k+1] = {1,0,1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,1,1,
 	1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,0,1,1,1,1,1,0,1,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1}; //(o do vitor está assim)
 /*
 int pol_gerador[n-k+1] = {1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,0,0,1,1,0,0,0,1,0,0,0,1,0,1,1,1,1,1,0,1,0,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0,
-0,0,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,1,0,0,0,0,0,1,0,0,1,1,1,0,0,0,1,0,1,1,1,0,0,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,0,1,1,0,0,1,0,0,1,
-1,0,1,1,0,0,1,0,1,1,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1,0,1}; //(matlab está assim - ELE CODIFICA INVERTIDO MESMO)
+	0,0,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,1,0,0,0,0,0,1,0,0,1,1,1,0,0,0,1,0,1,1,1,0,0,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,0,1,1,0,0,1,0,0,1,
+	1,0,1,1,0,0,1,0,1,1,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1,0,1}; //(matlab está assim - ELE CODIFICA INVERTIDO MESMO)
 */
 //int pol_primitivo[m+1] = {1,0,0,0,1,0,0,0,1,0,0,0,0,1,1}; // NAO RECONHECEU 					
 int pol_primitivo[m+1] = {1,1,0,0,0,0,1,0,0,0,1,0,0,0,1}; // NAO RECONHECEU (MATLAB)
@@ -158,20 +158,17 @@ int sindrome[2*t+1] = {0}; //sindrome da palavra recebida
 
 //DECODIFICADOR PETERSON (GAUSS)
 int S[t][t+1] = {0}; //matriz s�ndrome
-int A[t][t] = {0}; //matriz sindrome
 int LAMBDA[t+1] = {0}; //vetor lambda final
 int aux_LAMBDA[t+1] = {0}; //vetor lambda final auxiliar
 int lamb = 0; //lambda com alpha substituido
 int inv_S_i_i; //inverso de S[i][i]
 int n_err = t; //numero de erros
-int pos_err[t] = {-1}; //posi��o dos erros
+int pos_err[t] = {0}; //posi��o dos erros
 int teste_erros[t] = {0}; //posi�ao dos erros a serem testados
 unsigned char *aux_r; //auxiliar para calcular r no metodo de gauss
 int pre_sindrome[2*t+1] = {0}; //pre-sindrome da palavra no metodo de gauss
 
 int tab_mult(int multi1, int multi2);
-int det_gf(int **MAT, int size);
-int det(int **MAT, int size);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -251,7 +248,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			//if(tab_multi[i][j] == 1)
 			if(tab_mult(i,j) == 1)
 			{
-				tab_inv_dec[i] = j; // tabela inversa decimal
+				tab_inv_dec[i-1] = j; // tabela inversa decimal
 
 				for(int l = 1; l < (n+n_extension)+1; l++)
 				{
@@ -381,25 +378,25 @@ int _tmain(int argc, _TCHAR* argv[])
 	//adicionando erro 
 	//r[0] = r[0]^1;
 	//r[1] = r[1]^1;
-	//r[2] = r[2]^1;
+	r[2] = r[2]^1;
 	//r[3] = r[3]^1;
-	r[4] = r[4]^1;
-	//r[5] = r[5]^1;
+	//r[4] = r[4]^1;
+	r[5] = r[5]^1;
 	//r[6] = r[6]^1;
 	//r[7] = r[7]^1;
 	//r[8] = r[8]^1;
 	//r[9] = r[9]^1;
-	r[10] = r[10]^1;
+	//r[10] = r[10]^1;
 	//r[11] = r[11]^1;
 	//r[12] = r[12]^1;
-	//r[13] = r[13]^1;
+	r[13] = r[13]^1;
 
 	//r[5465] = r[5465]^1; //erro em [4]
 	//r[10926] = r[10926]^1; //erro em [4]
-
+	
 	//r[4091] = r[4091]^1; // erro em [4] e [10]
 
-	//r[563] = r[563]^1; // erro em [2] [5] [9] [13]
+	r[563] = r[563]^1; // erro em [2] [5] [9] [13]
 	//r[12940] = r[12940]^1; // erro em [2] [5] [9] [13]
 
 	printf ("");
@@ -481,85 +478,30 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	printf("");
 
-	// ------------------------------SINDROME BCH - CALCULO DO POLINOMIO LAMBDA - PETERSON (https://www.ece.uvic.ca/~agullive/decodingbch405-511-2016.pdf) - (GAUSS) (https://martin-thoma.com/solving-linear-equations-with-gaussian-elimination/) ------------------------------
+	// ------------------------------SINDROME BCH - CALCULO DO POLINOMIO LAMBDA - PETERSON (GAUSS) (https://martin-thoma.com/solving-linear-equations-with-gaussian-elimination/)------------------------------
 
-	int A_size = t, detA, aux_detA;
-
-calc_detA:
-
-	for(int i = 0; i < A_size; i++)
-	{
-		for(int j = 0; j < A_size; j++)
-		{
-			A[i][j] = 0;
-		}
-	}
-
-	detA = 0;
-	aux_detA = 1;
-
-	//calcular matriz A
-	A[0][0] = 1;
-	for(int i = 1; i < A_size; i++)
-	{
-		for(int j = 0; j < A_size; j++)
-		{
-			if(((i*2)-1-j) == -1)
-				A[i][j] = 1;
-			else if(((i*2)-1-j) < -1)
-				A[i][j] = 0;
-			else
-				A[i][j] = sindrome[(i*2)-1-j];
-		}
-	}
-	printf("");
-
-	//calcular determinante
-
-	int **AA = new int*[A_size];
-	for(int i = 0; i < A_size; i++)
-		AA[i] = new int[A_size];
-
-	for(int i = 0; i < A_size; i++)
-	{
-		for(int j = 0; j < A_size; j++)
-		{
-			AA[i][j] = A[i][j];
-		}
-	}
-
-	detA = det_gf(AA, A_size);
-
-	printf("");
-
-	if(detA == 0) //as equações possuem solução linear
-	{
-		A_size -= 2;
-		goto calc_detA;
-	}
-
-	for (int i = 0; i < A_size; ++i)
-		delete [] AA[i];
-	delete [] AA;
-
-	printf("");
-
-	//---------------------------------------------------------------- RESOLVER AS EQUAÇÕES (GAUSS)
-
-	//calcular a matriz S 
-
+	//calcular as matrizes S e C
 	for(int i = 0; i < t; i++)
 	{
 		for(int j = 0; j < t; j++)
 		{
-			S[i][j] = A[i][j];
+			S[i][j] = sindrome[i+j];
 		}
 
-		S[i][t] = sindrome[2*i];
+		S[i][t] = sindrome[i+t];
 	}
-
-	printf("");
-
+	/*
+	for(int i = 0; i < t; i++)
+	{
+	for(int j = 0; j < t; j++)
+	{
+	printf("%.5i ", S[i][j]);
+	}
+	printf("\n");
+	}
+	printf("\n");
+	*/
+	//----------------------------------------------------------------
 	for(int i=0; i<t; i++) 
 	{
 		// Search for maximum in this column
@@ -594,7 +536,17 @@ calc_detA:
 				}
 			}
 		}
-
+		/*
+		for(int i = 0; i < t; i++)
+		{
+		for(int j = 0; j < t; j++)
+		{
+		printf("%.5i ", S[i][j]);
+		}
+		printf("\n");
+		}
+		printf("\n");
+		*/
 	}
 
 	// Solve equation Ax=b for an upper triangular matrix S
@@ -623,14 +575,9 @@ calc_detA:
 	}
 
 	LAMBDA[0] = 1;
-
-
 	// ------------------------------DECODIFICADOR BCH - ENCONTRAR POSI��O DOS ERROS - FORNEY ------------------------------
 
 	count = 0;
-
-	for(int i = 0; i < t; i++)
-		pos_err[i] = -1;
 
 	for(int i = 0; i < (n+n_extension); i++)
 	{
@@ -653,10 +600,6 @@ calc_detA:
 			count++;
 		}
 	}
-
-	printf("");
-
-
 
 	//o numero de erros � dado pelo numero de linhas n�o-nulas da matriz S.
 	//se 1 > n_err > t, eu calculo todas as possibilidades de posi��o de erro at� a sindrome zerar que d� no m�ximo 924 tentativas para 6 de 12 bits de erro
@@ -866,84 +809,4 @@ int tab_mult(int multi1, int multi2)
 	else
 		return GF[(inv_GF[multi1]+inv_GF[multi2])%(n+n_extension)];
 
-}
-
-int det_gf(int **MAT, int size)
-{
-	int deter = 0;
-	if(size == 2)
-	{
-		deter = tab_mult(MAT[0][0], MAT[1][1]) ^ tab_mult(MAT[1][0], MAT[0][1]); //determinante 2x2
-	}
-	else
-	{
-		int a = 0;
-
-		int **mat = new int*[size-1];
-		for(int i = 0; i < (size-1); i++)
-			mat[i] = new int[size-1];
-
-		for(int ii = 0; ii < size; ii++) //elementos da 1a linha da matriz
-		{
-			//criar matriz menor
-			for(int j = 0; j < size-1; j++) //cada linha 
-			{
-				a = 0;
-				for(int i = 0; i < size; i++) //cada coluna
-				{
-					if (i == ii)
-						a = 1;
-					mat[j][i] = MAT[j][i+a];
-				}
-			}
-
-			//calcular determinante 
-			deter = deter ^ tab_mult(MAT[size-1][ii], det_gf(mat,size-1)); //parcela do determinante
-		}
-
-		for (int i = 0; i < size-1; ++i)
-			delete [] mat[i];
-		delete [] mat;
-	}
-	return deter;
-}
-
-int det(int **MAT, int size)
-{
-	int deter = 0;
-	if(size == 2)
-	{
-		deter = (MAT[0][0] * MAT[1][1]) - (MAT[1][0] * MAT[0][1]); //determinante 2x2
-	}
-	else
-	{
-		int a = 0;
-
-		int **mat = new int*[size-1];
-		for(int i = 0; i < (size-1); i++)
-			mat[i] = new int[size-1];
-
-		for(int ii = 0; ii < size; ii++) //elementos da 1a linha da matriz
-		{
-			//criar matriz menor
-			for(int j = 0; j < size-1; j++) //cada linha 
-			{
-				a = 0;
-				for(int i = 0; i < size; i++) //cada coluna
-				{
-					if (i == ii)
-						a = 1;
-					mat[j][i] = MAT[j][i+a];
-				}
-			}
-
-			//calcular determinante
-			deter = deter + pow(-1, ii+size)*MAT[size-1][ii]*det(mat,size-1); //parcela do determinante
-		}
-
-		for (int i = 0; i < size-1; ++i)
-			delete [] mat[i];
-		delete [] mat;
-	}
-	return deter;
 }
