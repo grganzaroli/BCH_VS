@@ -163,7 +163,6 @@ int LAMBDA[t+1] = {0}; //vetor lambda final
 int aux_LAMBDA[t+1] = {0}; //vetor lambda final auxiliar
 int lamb = 0; //lambda com alpha substituido
 int inv_S_i_i; //inverso de S[i][i]
-int n_err = t; //numero de erros
 int pos_err[t] = {-1}; //posi��o dos erros
 int teste_erros[t] = {0}; //posi�ao dos erros a serem testados
 unsigned char *aux_r; //auxiliar para calcular r no metodo de gauss
@@ -389,9 +388,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	r[7] = r[7]^1;
 	//r[8] = r[8]^1;
 	//r[9] = r[9]^1;
-	//r[10] = r[10]^1;
+	r[10] = r[10]^1;
 	//r[11] = r[11]^1;
-	//r[12] = r[12]^1;
+	r[12] = r[12]^1;
 	//r[13] = r[13]^1;
 
 	//r[5465] = r[5465]^1; //erro em [4]
@@ -477,9 +476,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// ------------------------------SINDROME BCH - CALCULO DO POLINOMIO LAMBDA - PETERSON (https://www.ece.uvic.ca/~agullive/decodingbch405-511-2016.pdf) - (GAUSS) (https://martin-thoma.com/solving-linear-equations-with-gaussian-elimination/) ------------------------------
 
-	int A_size = t, detA;
-
-calc_detA:
+	int A_size = t;
 
 	for(int i = 0; i < A_size; i++)
 	{
@@ -488,8 +485,6 @@ calc_detA:
 			A[i][j] = 0;
 		}
 	}
-
-	detA = 1;
 
 	//calcular matriz A
 	A[0][0] = 1;
@@ -507,39 +502,92 @@ calc_detA:
 	}
 	printf("");
 
-	//calcular determinante
+	//-----------------------------------------------------------------  descobrir numero de erros
 
-	int **AA = new int*[A_size];
-	for(int i = 0; i < A_size; i++)
-		AA[i] = new int[A_size];
+	int SS[t][t+1];
 
-	for(int i = 0; i < A_size; i++)
+	for(int i = 0; i < t; i++)
 	{
-		for(int j = 0; j < A_size; j++)
+		for(int j = 0; j < t; j++)
 		{
-			AA[i][j] = A[i][j];
+			SS[i][j] = sindrome[i+j];
+		}
+
+		SS[i][t] = sindrome[i+t];
+	}
+
+	for (int i = 0; i < t; i++) 
+	{
+
+		printf("");
+
+		// Search for maximum in this column
+		int maxEl = SS[i][i];
+		int maxRow = i;
+		for (int kk = i+1; kk < t; kk++)
+		{
+			if (abs(SS[kk][i]) > maxEl) 
+			{
+				maxEl = SS[kk][i];
+				maxRow = kk;
+			}
+		}
+
+		printf("");
+
+		// Swap maximum row with current row (column by column)
+		for (int kk = i; kk < t+1; kk++) 
+		{
+			int tmp = SS[maxRow][kk];
+			SS[maxRow][kk] = SS[i][kk];
+			SS[i][kk] = tmp;
+		}
+
+		printf("");
+
+		// Make all rows below this one 0 in current column
+		for (int kk = i+1; kk < t; kk++) 
+		{
+			int c = tab_mult(SS[kk][i], tab_inv_dec[SS[i][i]]); //c = -SS[kk][i]/SS[i][i]
+			printf("");
+			for (int j = i; j < t+1; j++) 
+			{
+				if (i==j) 
+				{
+					SS[kk][j] = 0;
+				} 
+				else 
+				{
+					SS[kk][j] = SS[kk][j] ^ tab_mult(c, SS[i][j]);
+				}
+			}
 		}
 	}
 
-	//detA = det_gf(AA, A_size);
+	//o numero de erros é dado pelo numero de linhas n�o-nulas da matriz SS.
 
-	printf("");
+	int aux;
 
-	if(detA == 0) //as equações nao possuem solução linear
+	//contar numero de erros
+	for(int i = t-1; i >= 0; i--)
 	{
-		A_size -= 2;
-		goto calc_detA;
-	}
+		aux = 0;
+		for(int j = 0; j <= t; j++)
+		{
+			aux = aux + SS[i][j];
+		}
 
-	for (int i = 0; i < A_size; ++i)
-		delete [] AA[i];
-	delete [] AA;
+		if(aux == 0)
+		{
+			A_size--;
+		}
+	}
 
 	printf("");
 
 	//---------------------------------------------------------------- RESOLVER AS EQUAÇÕES (GAUSS)
 
-	//calcular a matriz S 
+	//calcular a matriz S
 
 	for(int i = 0; i < A_size; i++)
 	{
@@ -718,7 +766,7 @@ calc_detA:
 
 	if(aux_s == 1)
 	{
-		printf("SINAL CORRIGIDO\n"); // ------------ FIM ------------
+		printf("%i ERROS, SINAL CORRIGIDO\n", A_size); // ------------ FIM ------------
 		goto end;
 	}
 	else
