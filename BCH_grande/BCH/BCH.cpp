@@ -178,7 +178,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	GF = new int[n+n_extension];
 	inv_GF = new int[n+n_extension+1];
 	tab_inv_alpha = new int[n+n_extension];
-	tab_inv_dec = new int[n+n_extension];
+	tab_inv_dec = new int[n+n_extension+1];
 	r = new unsigned char[n+n_extension]; 
 	err = new unsigned char[n+n_extension]; 
 	aux_r = new unsigned char[n+n_extension]; 
@@ -244,7 +244,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// ------------------------------TABELA INVERSA -----------------------------
 
-	for(int i = 0; i <= (n+n_extension); i++)
+	for(int i = 0; i <= (n+n_extension+1); i++)
 	{
 		for(int j = 0; j <= (n+n_extension); j++)
 		{
@@ -386,10 +386,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	r[4] = r[4]^1;
 	//r[5] = r[5]^1;
 	//r[6] = r[6]^1;
-	//r[7] = r[7]^1;
+	r[7] = r[7]^1;
 	//r[8] = r[8]^1;
 	//r[9] = r[9]^1;
-	r[10] = r[10]^1;
+	//r[10] = r[10]^1;
 	//r[11] = r[11]^1;
 	//r[12] = r[12]^1;
 	//r[13] = r[13]^1;
@@ -477,7 +477,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// ------------------------------SINDROME BCH - CALCULO DO POLINOMIO LAMBDA - PETERSON (https://www.ece.uvic.ca/~agullive/decodingbch405-511-2016.pdf) - (GAUSS) (https://martin-thoma.com/solving-linear-equations-with-gaussian-elimination/) ------------------------------
 
-	int A_size = t, detA, aux_detA;
+	int A_size = t, detA;
 
 calc_detA:
 
@@ -489,8 +489,7 @@ calc_detA:
 		}
 	}
 
-	detA = 0;
-	aux_detA = 1;
+	detA = 1;
 
 	//calcular matriz A
 	A[0][0] = 1;
@@ -522,11 +521,11 @@ calc_detA:
 		}
 	}
 
-	detA = det_gf(AA, A_size);
+	//detA = det_gf(AA, A_size);
 
 	printf("");
 
-	if(detA == 0) //as equações possuem solução linear
+	if(detA == 0) //as equações nao possuem solução linear
 	{
 		A_size -= 2;
 		goto calc_detA;
@@ -551,6 +550,8 @@ calc_detA:
 
 		S[i][t] = sindrome[2*i];
 	}
+
+	printf("");
 
 	for (int i = 0; i < t; i++) 
 	{
@@ -585,6 +586,7 @@ calc_detA:
 		for (int kk = i+1; kk < t; kk++) 
 		{
 			int c = tab_mult(S[kk][i], tab_inv_dec[S[i][i]]); //c = -S[kk][i]/S[i][i]
+			printf("");
 			for (int j = i; j < t+1; j++) 
 			{
 				if (i==j) 
@@ -593,7 +595,7 @@ calc_detA:
 				} 
 				else 
 				{
-					S[kk][j] += tab_mult(c, S[i][j]);
+					S[kk][j] = S[kk][j] ^ tab_mult(c, S[i][j]);
 				}
 			}
 		}
@@ -602,19 +604,21 @@ calc_detA:
 	printf("");
 
 	// Solve equation Ax=b for an upper triangular matrix A
-	for (int i = t-1; i >= 0; i--) 
+	for (int i = A_size-1; i >= 0; i--) 
 	{
 		LAMBDA[i] = tab_mult(S[i][t], tab_inv_dec[S[i][i]]); //LAMBDA[i] = S[i][n]/S[i][i]
+		printf("");
 		for (int kk = i-1; kk >= 0; kk--) 
 		{
-			S[kk][t] += tab_mult(S[kk][i], LAMBDA[i]);
+			S[kk][t] = S[kk][t] ^ tab_mult(S[kk][i], LAMBDA[i]);
+			printf("");
 		}
 	}
 
 	printf("");
 
 	//----------------------------------------------------------------
-
+	
 	for(int i = t; i > 0; i--)
 	{
 		LAMBDA[i] = LAMBDA[i-1];
@@ -624,7 +628,7 @@ calc_detA:
 
 
 	printf("");
-
+	
 	// ------------------------------DECODIFICADOR BCH - ENCONTRAR POSI��O DOS ERROS - FORNEY ------------------------------
 
 	count = 0;
@@ -760,7 +764,11 @@ int tab_mult(int multi1, int multi2)
 int det_gf(int **MAT, int size)
 {
 	int deter = 0;
-	if(size == 2)
+	if(size == 1)
+	{
+		deter = MAT[0][0]; //determinante 1x1
+	}
+	else if(size == 2)
 	{
 		deter = tab_mult(MAT[0][0], MAT[1][1]) ^ tab_mult(MAT[1][0], MAT[0][1]); //determinante 2x2
 	}
@@ -800,7 +808,11 @@ int det_gf(int **MAT, int size)
 int det(int **MAT, int size)
 {
 	int deter = 0;
-	if(size == 2)
+	if(size == 1)
+	{
+		deter = MAT[0][0]; //determinante 1x1
+	}
+	else if(size == 2)
 	{
 		deter = (MAT[0][0] * MAT[1][1]) - (MAT[1][0] * MAT[0][1]); //determinante 2x2
 	}
