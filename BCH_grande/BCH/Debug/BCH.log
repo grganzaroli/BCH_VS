@@ -1,4 +1,4 @@
-﻿Build started 15/01/2018 16:42:01.
+﻿Build started 16/01/2018 13:43:20.
      1>Project "C:\Users\grgan\Desktop\GitHub\BCH_VS\BCH_grande\BCH\BCH.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\BCH.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main_BCH.cpp
@@ -12,4 +12,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.28
+Time Elapsed 00:00:03.30

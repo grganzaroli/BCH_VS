@@ -141,7 +141,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	fclose(fff);
 
-	for (int j = 0; j < (n); j++) //grandes
+	for (int j = 0; j < (n); j++) //o matlab codifica ao contrario
 	{
 		rr[n-1-j] = vv[j];
 	}

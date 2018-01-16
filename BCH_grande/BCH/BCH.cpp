@@ -684,6 +684,12 @@ bool bch::decode(unsigned char *rr, int &n_err)
 		for(int i = 0; i < n; i++)
 			rr[i] = r[i+n_extension];
 
+		for(int i = 0; i < t; i++)
+		{
+			if(pos_err[i] >= 0)
+				pos_err[i] = pos_err[i]-n_extension;
+		}
+
 		n_err = A_size;
 
 		return true;
