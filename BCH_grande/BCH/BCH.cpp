@@ -110,6 +110,8 @@ void bch::init(int N, int K, int T, int M)
 	m = M;
 
 	n_extension = pow(2, m) - 1 - n;
+
+	printf("");
 }
 
 void bch::set_pol_prim(unsigned char *p_prim)
@@ -196,7 +198,7 @@ void bch::calc_tab_inv()
 	}
 	tab_inv_dec[n+n_extension] = 0;
 
-	for(int i = 0; i <= (n+n_extension+1); i++)
+	for(int i = 0; i < (n+n_extension+1); i++)
 	{
 		for(int j = 0; j <= (n+n_extension); j++)
 		{

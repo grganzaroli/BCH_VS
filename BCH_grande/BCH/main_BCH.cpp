@@ -42,7 +42,7 @@ int pol_primitivo[m+1] = {1,0,1,0,0,1}; //g(x) = 1 + x^2 + x^5
 */
 
 //BCH 10/15 short_frame (10800,10632,12) - 168 bits de paridade
-
+/*
 #define m 14
 #define n 10800 //acrescentar n_extension zeros no come�o do vetor recebido ate atingir (2^14)-1 = 16383 amostras
 #define k 10632	
@@ -51,23 +51,24 @@ int pol_primitivo[m+1] = {1,0,1,0,0,1}; //g(x) = 1 + x^2 + x^5
 
 unsigned char pol_gerador[n-k+1] = {1,0,1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,1,1,1,0,1,0,1,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,1,1,0,1,1,
 	0,0,1,0,0,1,1,0,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,0,0,1,1,1,0,1,0,0,0,1,1,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0,0,0,
-	1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,0,1,1,1,1,1,0,1,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1}; //(o do vitor está assim)
+	1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,0,1,1,1,1,1,0,1,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1}; //(o do victor está assim)
 			
 unsigned char pol_primitivo[m+1] = {1,1,0,0,0,0,1,0,0,0,1,0,0,0,1}; // (MATLAB)
+*/
 
 //BCH 10/15 normal_frame (43200,43008,12) - 192 bits de paridade
-/*
+
 #define m 16
 #define n 43200 //acrescentar n_extension zeros no come�o do vetor recebido ate atingir (2^16)-1 = 65535 amostras
 #define k 43008	
 #define n_extension 22335  //numero de zeroas a acrescntar em n
 #define t 12
-int pol_gerador[n-k+1] = {1,0,1,0,0,1,1,1,0,0,0,1,0,0,1,1,0,0,0,0,0,1,1,1,0,1,0,0,0,0,0,1,1,1,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,0,1,0,1,
+unsigned char pol_gerador[n-k+1] = {1,0,1,0,0,1,1,1,0,0,0,1,0,0,1,1,0,0,0,0,0,1,1,1,0,1,0,0,0,0,0,1,1,1,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,0,1,0,1,
 0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,0,0,0,0,1,1,0,0,1,1,1,1,0,0,1,0,1,1,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,1,0,1,0,1,0,0,0,0,1,0,
 0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,1,0,0,0,1,1,1,1,0,0,0,0,1,0,1,1,1,1,1,0,1,1,1,0,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,0,1,
-1,1,1,0,0,1,1,1}; //(norma)
+1,1,1,0,0,1,1,1}; //(norma, victor)
 //int pol_primitivo[m+1] = {1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1}; // NAO RECONHECEU
-int pol_primitivo[m+1] = {1,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1}; // NAO RECONHECEU (MATLAB)
+unsigned char pol_primitivo[m+1] = {1,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1}; // NAO RECONHECEU (MATLAB)
 //int pol_primitivo[m+1] = {1,0,0,1,1,1,0,0,0,1,1,0,0,1,0,1,1}; // NAO RECONHECEU
 //int pol_primitivo[m+1] = {1,1,0,1,0,0,1,1,0,0,0,1,1,1,0,0,1}; // NAO RECONHECEU
 //int pol_primitivo[m+1] = {1,0,0,1,1,0,1,1,0,1,1,0,0,0,0,1,1};	// NAO RECONHECEU		
@@ -88,7 +89,8 @@ int pol_primitivo[m+1] = {1,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1}; // NAO RECONHECEU 
 //int pol_primitivo[m+1] = {1,0,1,1,0,1,1,0,0,0,0,0,1,1,1,0,1}; // NAO RECONHECEU
 //int pol_primitivo[m+1] = {1,1,0,0,0,0,1,0,0,0,1,1,0,1,1,1,1};	// NAO RECONHECEU			
 //int pol_primitivo[m+1] = {1,1,1,1,0,1,1,0,0,0,1,0,0,0,0,1,1}; // NAO RECONHECEU
-*/
+
+
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -125,8 +127,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//teste.encode(uu, vv);
 
-	//MENSAGEM GERADA PELO MATLAB (short)
-	FILE *fff = fopen("in_decoder_bch.txt","r");
+	//MENSAGEM GERADA PELO MATLAB
+	//FILE *fff = fopen("in_decoder_bch_short.txt","r");
+	FILE *fff = fopen("in_decoder_bch_normal.txt","r");
 
 	for(int i = 0; i < n_extension; i++)
 	{
