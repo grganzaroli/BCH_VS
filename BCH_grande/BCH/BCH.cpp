@@ -3,6 +3,8 @@
 #include <cmath>
 #include "bch.h"
 
+#pragma warning	(disable: 4996)
+
 using namespace std;
 
 int bch::tab_mult(int multi1, int multi2)
