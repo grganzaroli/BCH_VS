@@ -324,11 +324,18 @@ bool bch::decode(unsigned char *rr, int &n_err)
 
 	//setar variáveis
 
-	for(int i = 0; i < n_extension; i++)
+	for(int i = 0; i < n+n_extension; i++)
 		r[i] = 0;
 
-	for(int i = n_extension; i < n+n_extension; i++)
-		r[i] = rr[i-n_extension];
+	for(int i = 0; i < n; i++)
+		r[i] = rr[i];
+
+	FILE *F = fopen("aaa.txt","w+");
+	for(int i = 0; i < n+n_extension; i++)
+		fprintf(F,"%i", r[i]);
+	fclose(F);
+
+	printf("");
 
 	for(int i = 0; i < (2*t+1); i++)
 		sindrome[i] = 0;
@@ -397,7 +404,7 @@ bool bch::decode(unsigned char *rr, int &n_err)
 		delete [] err;
 
 		for(int i = 0; i < n; i++)
-			rr[i] = r[i+n_extension];
+			rr[i] = r[i];
 
 		n_err = 0;
 
@@ -686,7 +693,7 @@ bool bch::decode(unsigned char *rr, int &n_err)
 		delete [] err;
 
 		for(int i = 0; i < n; i++)
-			rr[i] = r[i+n_extension];
+			rr[i] = r[i];
 
 		for(int i = 0; i < t; i++)
 		{

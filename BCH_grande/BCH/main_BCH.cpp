@@ -42,13 +42,13 @@ int pol_primitivo[m+1] = {1,0,1,0,0,1}; //g(x) = 1 + x^2 + x^5
 */
 
 //BCH 10/15 short_frame (10800,10632,12) - 168 bits de paridade
-/*
+
 #define m 14
 #define n 10800 //acrescentar n_extension zeros no come�o do vetor recebido ate atingir (2^14)-1 = 16383 amostras
 #define k 10632	
 #define n_extension 5583  //numero de zeroas a acrescntar em n
 #define t 12
-
+/*
 unsigned char pol_gerador[n-k+1] = {1,0,1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,1,1,1,0,1,0,1,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,1,1,0,1,1,
 	0,0,1,0,0,1,1,0,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,0,0,1,1,1,0,1,0,0,0,1,1,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0,0,0,
 	1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,0,1,1,1,1,1,0,1,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1}; //(o do victor está assim)
@@ -67,28 +67,43 @@ unsigned char pol_gerador[n-k+1] = {1,0,1,0,0,1,1,1,0,0,0,1,0,0,1,1,0,0,0,0,0,1,
 0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,0,0,0,0,1,1,0,0,1,1,1,1,0,0,1,0,1,1,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,1,0,1,0,1,0,0,0,0,1,0,
 0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,1,0,0,0,1,1,1,1,0,0,0,0,1,0,1,1,1,1,1,0,1,1,1,0,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,0,1,
 1,1,1,0,0,1,1,1}; //(norma, victor)
-//int pol_primitivo[m+1] = {1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1}; // NAO RECONHECEU
-unsigned char pol_primitivo[m+1] = {1,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1}; // NAO RECONHECEU (MATLAB)
-//int pol_primitivo[m+1] = {1,0,0,1,1,1,0,0,0,1,1,0,0,1,0,1,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,1,0,1,0,0,1,1,0,0,0,1,1,1,0,0,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,0,0,1,1,0,1,1,0,1,1,0,0,0,0,1,1};	// NAO RECONHECEU		
-//int pol_primitivo[m+1] = {1,1,0,0,0,0,1,1,0,1,1,0,1,1,0,0,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,1,0,0,0,1,1,1,0,0,1,0,0,0,1,1,1};	// NAO RECONHECEU	
-//int pol_primitivo[m+1] = {1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,1,0,0,0,1,1,1,1,0,1,0,1,0,1,1,1};	// NAO RECONHECEU		
-//int pol_primitivo[m+1] = {1,1,1,0,1,0,1,0,1,1,1,1,0,0,0,1,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,1,0,0,0,1,1,0,0,1,1,1,0,1,1,1,1};	// NAO RECONHECEU		
-//int pol_primitivo[m+1] = {1,1,1,1,0,1,1,1,0,0,1,1,0,0,0,1,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,0,1};	// NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,0,1,1,1,0,1,1,1,1,0,0,0,0,0,0,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,0,1,1,1,0,1,0,0,1,0,0,0,0,0,0,1};	// NAO RECONHECEU			
-//int pol_primitivo[m+1] = {1,0,0,0,0,0,0,1,0,0,1,0,1,1,1,0,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,0,1,0,0,0,1,0,1,0,0,0,0,1,0,1,1};	// NAO RECONHECEU			
-//int pol_primitivo[m+1] = {1,1,0,1,0,0,0,0,1,0,1,0,0,0,1,0,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,0,1,1,1,0,0,0,0,0,1,1,0,1,1,0,1};	// NAO RECONHECEU			
-//int pol_primitivo[m+1] = {1,0,1,1,0,1,1,0,0,0,0,0,1,1,1,0,1}; // NAO RECONHECEU
-//int pol_primitivo[m+1] = {1,1,0,0,0,0,1,0,0,0,1,1,0,1,1,1,1};	// NAO RECONHECEU			
-//int pol_primitivo[m+1] = {1,1,1,1,0,1,1,0,0,0,1,0,0,0,0,1,1}; // NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1};// NAO RECONHECEU (MATLAB)
+//unsigned char pol_primitivo[m+1] = {1,0,0,1,1,1,0,0,0,1,1,0,0,1,0,1,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,1,0,1,0,0,1,1,0,0,0,1,1,1,0,0,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,0,0,1,1,0,1,1,0,1,1,0,0,0,0,1,1};// NAO RECONHECEU		
+//unsigned char pol_primitivo[m+1] = {1,1,0,0,0,0,1,1,0,1,1,0,1,1,0,0,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,1,0,0,0,1,1,1,0,0,1,0,0,0,1,1,1};// NAO RECONHECEU	
+//unsigned char pol_primitivo[m+1] = {1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,1,0,0,0,1,1,1,1,0,1,0,1,0,1,1,1};// NAO RECONHECEU		
+//unsigned char pol_primitivo[m+1] = {1,1,1,0,1,0,1,0,1,1,1,1,0,0,0,1,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,1,0,0,0,1,1,0,0,1,1,1,0,1,1,1,1};// NAO RECONHECEU		
+//unsigned char pol_primitivo[m+1] = {1,1,1,1,0,1,1,1,0,0,1,1,0,0,0,1,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,0,0,0,1,1,1,1,0,1,1,1,0,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,0,1,1,1,0,1,1,1,1,0,0,0,0,0,0,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,0,1,1,1,0,1,0,0,1,0,0,0,0,0,0,1};// NAO RECONHECEU			
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,0,0,0,1,0,0,1,0,1,1,1,0,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,0,1,0,0,0,1,0,1,0,0,0,0,1,0,1,1};// NAO RECONHECEU			
+//unsigned char pol_primitivo[m+1] = {1,1,0,1,0,0,0,0,1,0,1,0,0,0,1,0,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,0,1,1,1,0,0,0,0,0,1,1,0,1,1,0,1};// NAO RECONHECEU			
+//unsigned char pol_primitivo[m+1] = {1,0,1,1,0,1,1,0,0,0,0,0,1,1,1,0,1};// NAO RECONHECEU
+//unsigned char pol_primitivo[m+1] = {1,1,0,0,0,0,1,0,0,0,1,1,0,1,1,1,1};// NAO RECONHECEU			
+//unsigned char pol_primitivo[m+1] = {1,1,1,1,0,1,1,0,0,0,1,0,0,0,0,1,1};// NAO RECONHECEU
+  unsigned char pol_primitivo[m+1] = {1,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,1};
+
+
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,0,1,1,1,0,1,0,1,0,0,0,0,1};
+//unsigned char pol_primitivo[m+1] = {1,1,0,1,0,1,1,1,1,0,1,1,0,0,1,0,1};
+//unsigned char pol_primitivo[m+1] = {1,0,1,0,1,1,0,1,0,0,1,0,1,0,1,0,1};
+//unsigned char pol_primitivo[m+1] = {1,1,1,1,1,0,1,1,1,1,0,1,1,0,1,0,1};
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,1};
+//unsigned char pol_primitivo[m+1] = {1,0,0,1,1,1,0,1,0,0,0,1,0,1,1,0,1};
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,0,1,1,1,1,1,0,1,1,1,1,0,1};
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,1,1,0,1,0,1,1,1,0,0,0,1,1};
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,1};
+//unsigned char pol_primitivo[m+1] = {1,0,1,1,1,0,1,0,1,1,0,1,0,0,1,1,1};
+//unsigned char pol_primitivo[m+1] = {1,0,1,1,1,0,0,1,1,0,1,1,0,0,1,1,1};
+//unsigned char pol_primitivo[m+1] = {1,0,0,0,1,1,1,1,1,0,0,1,0,1,1,1,1};
 
 
 
@@ -129,7 +144,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//MENSAGEM GERADA PELO MATLAB
 	//FILE *fff = fopen("in_decoder_bch_short.txt","r");
-	FILE *fff = fopen("in_decoder_bch_normal.txt","r");
+	//FILE *fff = fopen("in_decoder_bch_normal.txt","r");
+	FILE *fff = fopen("in_decoder_bch_normal_victor.txt","r");
 
 	for(int i = 0; i < n_extension; i++)
 	{

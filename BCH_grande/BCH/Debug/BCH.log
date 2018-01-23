@@ -1,8 +1,16 @@
-﻿Build started 22/01/2018 13:04:49.
+﻿Build started 23/01/2018 15:50:25.
      1>Project "C:\Users\grgan\Documents\GitHub\BCH_VS\BCH_grande\BCH\BCH.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\BCH.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main_BCH.cpp
          main_BCH.cpp
+     1>c:\users\grgan\documents\github\bch_vs\bch_grande\bch\main_bch.cpp(61): warning C4005: 'm' : macro redefinition
+                 c:\users\grgan\documents\github\bch_vs\bch_grande\bch\main_bch.cpp(46) : see previous definition of 'm'
+     1>c:\users\grgan\documents\github\bch_vs\bch_grande\bch\main_bch.cpp(62): warning C4005: 'n' : macro redefinition
+                 c:\users\grgan\documents\github\bch_vs\bch_grande\bch\main_bch.cpp(47) : see previous definition of 'n'
+     1>c:\users\grgan\documents\github\bch_vs\bch_grande\bch\main_bch.cpp(63): warning C4005: 'k' : macro redefinition
+                 c:\users\grgan\documents\github\bch_vs\bch_grande\bch\main_bch.cpp(48) : see previous definition of 'k'
+     1>c:\users\grgan\documents\github\bch_vs\bch_grande\bch\main_bch.cpp(64): warning C4005: 'n_extension' : macro redefinition
+                 c:\users\grgan\documents\github\bch_vs\bch_grande\bch\main_bch.cpp(49) : see previous definition of 'n_extension'
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\grgan\Documents\GitHub\BCH_VS\BCH_grande\Debug\BCH.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\grgan\Documents\GitHub\BCH_VS\BCH_grande\Debug\BCH.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\grgan\Documents\GitHub\BCH_VS\BCH_grande\Debug\BCH.lib" /MACHINE:X86 Debug\main_BCH.obj
          Debug\bch.obj
@@ -12,4 +20,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.54
+Time Elapsed 00:00:03.72
